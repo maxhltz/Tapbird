@@ -11,13 +11,32 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  double birdYaxis = -1;
+  static double birdYaxis = 0;
+  double time = 0;
+  double height = 0;
+  double initialHeight = birdYaxis;
+  bool gameHasStarted = false;
 
   void jump() {
-    Timer.periodic(Duration(milliseconds: 500), (timer) {
+    setState(() {
+      time = 0;
+      initialHeight = birdYaxis;
+    });
+
+  }
+
+  void startGame() {
+    gameHasStarted = true;
+    Timer.periodic(Duration(milliseconds: 60), (timer) {
+      time += 0.05;
+      height = -4.9 * time * time + 2.8 * time;
       setState(() {
-        birdYaxis += 0.1;
+        birdYaxis = initialHeight - height;
       });
+      if (birdYaxis > 1) {
+        timer.cancel();
+        gameHasStarted = false;
+      }
     });
   }
 
@@ -28,7 +47,13 @@ class _HomePageState extends State<HomePage> {
         children: [
           Expanded(flex: 2,
             child: GestureDetector(
-              onTap: jump,
+              onTap: () {
+                if (gameHasStarted) {
+                  jump();
+                } else {
+                  startGame();
+                }
+              },
 
               child: AnimatedContainer(
                 alignment: Alignment(0,birdYaxis),
@@ -38,11 +63,37 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-
-            Expanded(child: Container(color: Colors.green,),),
+          Container(
+            height: 15,
+            color: Colors.green,
+          ),
+          Expanded(
+            child: Container(
+              color: Colors.brown,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Score", style: TextStyle(color: Colors.black, fontSize: 20)),
+                    SizedBox(height: 20,),
+                    Text("0", style: TextStyle(color: Colors.black, fontSize: 35)),
+                  ],
+                ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Highscore", style: TextStyle(color: Colors.black, fontSize: 20)),
+                      SizedBox(height: 20,),
+                      Text("10", style: TextStyle(color: Colors.black, fontSize: 35)),
+                    ],
+                  ),
+              ],),
+            ),
+          ),
         ],
       ),
-
     );
   }
 }
