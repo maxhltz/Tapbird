@@ -11,7 +11,7 @@ class MyCoverScreen extends StatelessWidget {
       alignment: Alignment(0, -0.5),
       child: Text(
         gameHasStarted ? '' : 'T A P  T O  P L A Y',
-        style: TextStyle(color: Colors.white, fontSize: 25),
+        style: TextStyle(color: Colors.brown, fontSize: 30, fontWeight: FontWeight.bold),
       ),
     );
   }

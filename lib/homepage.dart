@@ -168,7 +168,13 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               flex: 3,
               child: Container(
-                color: Colors.blue,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('lib/bilder/hintergrund.gif'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                //color: Colors.transparent,
                 child: Center(
                   child: Stack(
                     children: [
