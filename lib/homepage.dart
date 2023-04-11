@@ -35,8 +35,14 @@ class _HomePageState extends State<HomePage> {
     [0.4, 0.6],
   ];
 
+  //score variables
+  int score = 0;
+  late Text scoreText;
+
+
   void startGame() {
     gameHasStarted = true;
+    score = 0;
     Timer.periodic(Duration(milliseconds: 10), (timer) {
       // a real physical jump is the same as an upside down parabola
       // so this is a simple quadratic equation
@@ -61,6 +67,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void moveMap() {
+
     for (int i = 0; i < barrierX.length; i++) {
       // keep barriers moving
       setState(() {
@@ -71,7 +78,13 @@ class _HomePageState extends State<HomePage> {
       if (barrierX[i] < -1.5) {
         barrierX[i] += 3;
       }
+
+      // check if bird has passed the barrier
+      if (barrierX[i] < -0.4 && barrierX[i] > -0.405) {
+        score += 1;
+      }
     }
+
   }
 
   void resetGame() {
@@ -232,12 +245,13 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '0',
+                            '$score',
                             style: TextStyle(color: Colors.white, fontSize: 35),
                           ),
                           SizedBox(
                             height: 15,
                           ),
+                          //scoreText = Text("Score: $score", style: TextStyle(fontSize: 20)),
                           Text(
                             'S C O R E',
                             style: TextStyle(color: Colors.white, fontSize: 20),
